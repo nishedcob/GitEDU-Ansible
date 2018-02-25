@@ -1,0 +1,128 @@
+
+# hosts
+debian-ssh-1	192.168.67.3
+
+##############################
+# BEGIN:         Web Servers #
+##############################
+
+[gitedu-static-servers]
+debian-ssh-1
+
+[edunube-static-servers]
+debian-ssh-1
+
+[gitserverhttpendpoint-static-servers]
+debian-ssh-1
+
+[static-servers:children]
+gitedu-static-servers
+edunube-static-servers
+gitserverhttpendpoint-static-servers
+
+[gitweb-servers]
+debian-ssh-1
+
+[inv-proxy-servers]
+debian-ssh-1
+
+[nginx-servers:children]
+inv-proxy-servers
+static-servers
+gitweb-servers
+
+[web-servers:children]
+nginx-servers
+
+##############################
+# END:           Web Servers #
+##############################
+
+######################################################
+
+##############################
+# BEGIN: Application Servers #
+##############################
+
+[gitedu-app-servers]
+debian-ssh-1
+
+[edunube-app-servers]
+debian-ssh-1
+
+[gitserverhttpendpoint-app-servers]
+debian-ssh-1
+
+[django-servers:children]
+gitedu-app-servers
+edunube-app-servers
+gitserverhttpendpoint-app-servers
+
+[uwsgi-servers:children]
+django-servers
+
+[python3-servers:children]
+uwsgi-servers
+
+[app-servers:children]
+python3-servers
+
+##############################
+# END:   Application Servers #
+##############################
+
+######################################################
+
+##############################
+# BEGIN:    Database Servers #
+##############################
+
+##################
+# BEGIN:   PGSQL #
+##################
+[gitedu-db-servers]
+debian-ssh-1
+
+[edunube-db-servers]
+debian-ssh-1
+
+[gitserverhttpendpoint-db-servers]
+debian-ssh-1
+
+[pgsql-servers:children]
+gitedu-db-servers
+edunube-db-servers
+gitserverhttpendpoint-db-servers
+
+##################
+# END:     PGSQL #
+##################
+
+##############################
+
+##################
+# BEGIN: MongoDB #
+##################
+
+[gitedu-mdb-servers]
+debian-ssh-1
+
+[edunube-mdb-servers]
+debian-ssh-1
+
+[mongodb-servers:children]
+gitedu-mdb-servers
+edunube-mdb-servers
+
+##################
+# END:   MongoDB #
+##################
+
+[db-servers:children]
+pgsql-servers
+mongodb-servers
+
+##############################
+# END:      Database Servers #
+##############################
+
