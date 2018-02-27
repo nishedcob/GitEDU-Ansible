@@ -1,0 +1,116 @@
+---
+
+##############################################################
+
+# Generic Init
+
+- hosts: all
+  tasks:
+    - include: roles/common/tasks/00-pre.yaml
+#    - include_tasks: roles/common/tasks/00-pre.yaml
+
+##############################################################
+
+# Web Servers Init
+
+- hosts: web-servers
+  tasks:
+    - include: roles/web/tasks/00-pre.yaml
+
+- hosts: nginx-servers
+  tasks:
+    - include: roles/nginx/tasks/00-pre.yaml
+
+- hosts: inv-proxy-servers
+  tasks:
+    - include: roles/inv-proxy/tasks/00-pre.yaml
+
+- hosts: gitweb-servers
+  tasks:
+    - include: roles/gitweb/tasks/00-pre.yaml
+
+- hosts: static-servers
+  tasks:
+    - include: roles/static/tasks/00-pre.yaml
+
+- hosts: gitserverhttpendpoint-static-servers
+  tasks:
+    - include: roles/gitserverhttpendpoint-static/tasks/00-pre.yaml
+
+- hosts: edunube-static-servers
+  tasks:
+    - include: roles/edunube-static/tasks/00-pre.yaml
+
+- hosts: gitedu-static-servers
+  tasks:
+    - include: roles/gitedu-static/tasks/00-pre.yaml
+
+##############################################################
+
+# App Servers Init
+
+- hosts: app-servers
+  tasks:
+    - include: roles/app/tasks/00-pre.yaml
+
+- hosts: python3-servers
+  tasks:
+    - include: roles/python3/tasks/00-pre.yaml
+
+- hosts: uwsgi-servers
+  tasks:
+    - include: roles/uwsgi/tasks/00-pre.yaml
+
+- hosts: django-servers
+  tasks:
+    - include: roles/django/tasks/00-pre.yaml
+
+- hosts: gitserverhttpendpoint-app-servers
+  tasks:
+    - include: roles/gitserverhttpendpoint-app/tasks/00-pre.yaml
+
+- hosts: edunube-app-servers
+  tasks:
+    - include: roles/edunube-app/tasks/00-pre.yaml
+
+- hosts: gitedu-app-servers
+  tasks:
+    - include: roles/gitedu-app/tasks/00-pre.yaml
+
+##############################################################
+
+# DB Servers Init
+
+- hosts: db-servers
+  tasks:
+    - include: roles/db/tasks/00-pre.yaml
+
+- hosts: pgsql-servers
+  tasks:
+    - include: roles/pgsql/tasks/00-pre.yaml
+
+- hosts: mongodb-servers
+  tasks:
+    - include: roles/mongodb/tasks/00-pre.yaml
+
+- hosts: edunube-mdb-servers
+  tasks:
+    - include: roles/edunube-mdb/tasks/00-pre.yaml
+
+- hosts: gitedu-mdb-servers
+  tasks:
+    - include: roles/gitedu-mdb/tasks/00-pre.yaml
+
+- hosts: gitserverhttpendpoint-db-servers
+  tasks:
+    - include: roles/gitserverhttpendpoint-db/tasks/00-pre.yaml
+
+- hosts: edunube-db-servers
+  tasks:
+    - include: roles/edunube-db/tasks/00-pre.yaml
+
+- hosts: gitedu-db-servers
+  tasks:
+    - include: roles/gitedu-db/tasks/00-pre.yaml
+
+##############################################################
