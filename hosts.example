@@ -1,6 +1,6 @@
 
 # hosts
-debian-ssh-1	192.168.67.3
+debian-ssh-1	ansible_host=172.17.0.3  ansible_user=root ansible_connection=ssh ansible_ssh_pass=password
 
 ##############################
 # BEGIN:         Web Servers #
@@ -125,4 +125,3 @@ mongodb-servers
 ##############################
 # END:      Database Servers #
 ##############################
-
