@@ -1,2 +1,40 @@
 ---
 
+- name: install the latest version of vim
+  package:
+    name: vim
+    state: latest
+
+- name: install the latest version of zsh
+  package:
+    name: zsh
+    state: latest
+
+- name: install the latest version of tmux
+  package:
+    name: tmux
+    state: latest
+
+- name: install the latest version of net-tools
+  package:
+    name: net-tools
+    state: latest
+
+- name: install the latest version of git
+  package:
+    name: git
+    state: latest
+
+- name: create nyx user for administration, add to sudo group
+  user:
+    name: nyx
+    shell: /bin/zsh
+    groups: sudo
+    append: yes
+
+- name: create jalopez user for administration, add to sudo group
+  user:
+    name: jalopez
+    shell: /bin/bash
+    groups: sudo
+    append: yes
