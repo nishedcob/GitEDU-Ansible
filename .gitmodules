@@ -1,0 +1,3 @@
+[submodule "docker-ssh"]
+	path = docker-ssh
+	url = https://github.com/nishedcob/docker-ssh
