@@ -1,2 +1,21 @@
 ---
 
+- name: install the latest version of python3
+  package:
+    name: python3
+    state: latest
+
+- name: install the latest version of python3-dev
+  package:
+    name: python3-dev
+    state: latest
+
+- name: install the latest version of virtualenv (python3)
+  package:
+    name: virtualenv
+    state: latest
+
+- name: install the latest version of python3-pip
+  package:
+    name: python3-pip
+    state: latest
