@@ -1,2 +1,11 @@
 ---
 
+- name: install the latest version of postgresql
+  package:
+    name: postgresql
+    state: latest
+
+- name: install the latest version of python-psycopg2
+  package:
+    name: python-psycopg2
+    state: latest
