@@ -1,2 +1,5 @@
 ---
 
+- name: add the gitedu mongodb user
+  mongodb_user: database="gitEduDB" name="gitEduUser" password="G1TedU$3r" state=present
+  ignore_errors: yes

@@ -1,2 +1,5 @@
 ---
 
+- name: add the edunube mongodb user
+  mongodb_user: database="eduNubeDB" name="eduNubeUser" password="3d?N_6E" state=present
+  ignore_errors: yes
