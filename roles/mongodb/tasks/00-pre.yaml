@@ -1,2 +1,11 @@
 ---
 
+- name: install the latest version of mongodb
+  package:
+    name: mongodb
+    state: latest
+
+- name: install the latest version of python-pymongo
+  package:
+    name: python-pymongo
+    state: latest
