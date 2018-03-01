@@ -1,2 +1,38 @@
 ---
 
+- name: (GitEDU) Create user in postgresql database
+  become: yes
+  become_user: postgres
+  postgresql_user:
+    name: giteduser
+    password: 'g1T3d_$3r'
+
+- name: (GitEDU) Create database in postgresql
+  become: yes
+  become_user: postgres
+  postgresql_db:
+    name: gitedudb
+    owner: giteduser
+    encoding: UTF-8
+
+# Need at least ansible 2.3, we only have ansible 2.2
+#- name: (GitEDU) Create database schema in postgresql
+#  postgresql_schema:
+#    name: giteduapp
+#    owner: giteduser
+#    database: gitedudb
+#    login_user: giteduser
+#    login_password: 'g1T3d_$3r'
+
+- name: (GitEDU) psql check schema giteduapp
+  command: psql -t -d gitedudb -c "SELECT EXISTS(SELECT 1 FROM pg_namespace WHERE nspname = 'giteduapp');"
+  register: check_schema
+  changed_when: "'f' in '{{ check_schema.stdout }}'"
+  become: yes
+  become_user: postgres
+
+- name: (GitEDU) psql schema giteduapp
+  command: psql -d gitedudb -c "CREATE SCHEMA giteduapp; ALTER USER giteduser SET search_path TO giteduapp;"
+  when: check_schema.changed
+  become: yes
+  become_user: postgres
