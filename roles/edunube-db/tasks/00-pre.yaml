@@ -1,2 +1,38 @@
 ---
 
+- name: (EduNube) Create user in postgresql database
+  become: yes
+  become_user: postgres
+  postgresql_user:
+    name: edunubeuser
+    password: '3d?N_6E'
+
+- name: (EduNube) Create database in postgresql
+  become: yes
+  become_user: postgres
+  postgresql_db:
+    name: edunubedb
+    owner: edunubeuser
+    encoding: UTF-8
+
+# Need at least ansible 2.3, we only have ansible 2.2
+#- name: (EduNube) Create database schema in postgresql
+#  postgresql_schema:
+#    name: edunubeapp
+#    owner: edunubeuser
+#    database: edunubedb
+#    login_user: edunubeuser
+#    login_password: '3d?N_6E'
+
+- name: (EduNube) psql check schema edunubeapp
+  command: psql -t -d edunubedb -c "SELECT EXISTS(SELECT 1 FROM pg_namespace WHERE nspname = 'edunubeapp');"
+  register: check_schema
+  changed_when: "'f' in '{{ check_schema.stdout }}'"
+  become: yes
+  become_user: postgres
+
+- name: (EduNube) psql schema edunubeapp
+  command: psql -d edunubedb -c "CREATE SCHEMA edunubeapp; ALTER USER edunubeuser SET search_path TO edunubeapp;"
+  when: check_schema.changed
+  become: yes
+  become_user: postgres
