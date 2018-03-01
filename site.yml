@@ -7,6 +7,7 @@
 - hosts: all
   tasks:
     - include: roles/common/tasks/00-pre.yaml
+      become: True
 #    - include_tasks: roles/common/tasks/00-pre.yaml
 
 ##############################################################
@@ -16,34 +17,42 @@
 - hosts: web-servers
   tasks:
     - include: roles/web/tasks/00-pre.yaml
+      become: True
 
 - hosts: nginx-servers
   tasks:
     - include: roles/nginx/tasks/00-pre.yaml
+      become: True
 
 - hosts: inv-proxy-servers
   tasks:
     - include: roles/inv-proxy/tasks/00-pre.yaml
+      become: True
 
 - hosts: gitweb-servers
   tasks:
     - include: roles/gitweb/tasks/00-pre.yaml
+      become: True
 
 - hosts: static-servers
   tasks:
     - include: roles/static/tasks/00-pre.yaml
+      become: True
 
 - hosts: gitserverhttpendpoint-static-servers
   tasks:
     - include: roles/gitserverhttpendpoint-static/tasks/00-pre.yaml
+      become: True
 
 - hosts: edunube-static-servers
   tasks:
     - include: roles/edunube-static/tasks/00-pre.yaml
+      become: True
 
 - hosts: gitedu-static-servers
   tasks:
     - include: roles/gitedu-static/tasks/00-pre.yaml
+      become: True
 
 ##############################################################
 
@@ -52,30 +61,37 @@
 - hosts: app-servers
   tasks:
     - include: roles/app/tasks/00-pre.yaml
+      become: True
 
 - hosts: python3-servers
   tasks:
     - include: roles/python3/tasks/00-pre.yaml
+      become: True
 
 - hosts: uwsgi-servers
   tasks:
     - include: roles/uwsgi/tasks/00-pre.yaml
+      become: True
 
 - hosts: django-servers
   tasks:
     - include: roles/django/tasks/00-pre.yaml
+      become: True
 
 - hosts: gitserverhttpendpoint-app-servers
   tasks:
     - include: roles/gitserverhttpendpoint-app/tasks/00-pre.yaml
+      become: True
 
 - hosts: edunube-app-servers
   tasks:
     - include: roles/edunube-app/tasks/00-pre.yaml
+      become: True
 
 - hosts: gitedu-app-servers
   tasks:
     - include: roles/gitedu-app/tasks/00-pre.yaml
+      become: True
 
 ##############################################################
 
@@ -84,33 +100,41 @@
 - hosts: db-servers
   tasks:
     - include: roles/db/tasks/00-pre.yaml
+      become: True
 
 - hosts: pgsql-servers
   tasks:
     - include: roles/pgsql/tasks/00-pre.yaml
+      become: True
 
 - hosts: mongodb-servers
   tasks:
     - include: roles/mongodb/tasks/00-pre.yaml
+      become: True
 
 - hosts: edunube-mdb-servers
   tasks:
     - include: roles/edunube-mdb/tasks/00-pre.yaml
+      become: True
 
 - hosts: gitedu-mdb-servers
   tasks:
     - include: roles/gitedu-mdb/tasks/00-pre.yaml
+      become: True
 
 - hosts: gitserverhttpendpoint-db-servers
   tasks:
     - include: roles/gitserverhttpendpoint-db/tasks/00-pre.yaml
+      become: True
 
 - hosts: edunube-db-servers
   tasks:
     - include: roles/edunube-db/tasks/00-pre.yaml
+      become: True
 
 - hosts: gitedu-db-servers
   tasks:
     - include: roles/gitedu-db/tasks/00-pre.yaml
+      become: True
 
 ##############################################################

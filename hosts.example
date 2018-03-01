@@ -1,6 +1,9 @@
 
 # hosts
-debian-ssh-1	ansible_host=172.17.0.3  ansible_user=root ansible_connection=ssh ansible_ssh_pass=password
+#### Docker:
+#debian-ssh-1	ansible_host=172.17.0.3  ansible_user=root ansible_connection=ssh ansible_ssh_pass=password
+#### Vagrant
+debian-ssh-1	ansible_host=127.0.0.1 ansible_port=2222  ansible_user=vagrant ansible_connection=ssh  ansible_ssh_private_key_file='debian-vagrant/.vagrant/machines/default/virtualbox/private_key'
 
 ##############################
 # BEGIN:         Web Servers #
