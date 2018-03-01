@@ -1,5 +1,14 @@
 ---
 
 - name: add the gitedu mongodb user
-  mongodb_user: database="gitEduDB" name="gitEduUser" password="G1TedU$3r" state=present
+  mongodb_user:
+    #login_database: admin
+    #database: "gitEduDB"
+    database: admin
+    name: "gitEduUser"
+    password: "G1TedU$3r"
+    state: present
+    roles:
+      - readWrite
+    update_password: on_create
   ignore_errors: yes

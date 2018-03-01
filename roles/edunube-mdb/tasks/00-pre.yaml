@@ -1,5 +1,14 @@
 ---
 
 - name: add the edunube mongodb user
-  mongodb_user: database="eduNubeDB" name="eduNubeUser" password="3d?N_6E" state=present
+  mongodb_user:
+    #login_database: admin
+    #database: "eduNubeDB"
+    database: admin
+    name: "eduNubeUser"
+    password: "3d?N_6E"
+    state: present
+    roles:
+      - readWrite
+    update_password: on_create
   ignore_errors: yes
