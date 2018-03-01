@@ -1,2 +1,38 @@
 ---
 
+- name: (GitServerHTTPEndpoint) Create user in postgresql database
+  become: yes
+  become_user: postgres
+  postgresql_user:
+    name: gitendpointuser
+    password: 'g1T3Ndp01Nt_$3r'
+
+- name: (GitServerHTTPEndpoint) Create database in postgresql
+  become: yes
+  become_user: postgres
+  postgresql_db:
+    name: gitendpointdb
+    owner: gitendpointuser
+    encoding: UTF-8
+
+# Need at least ansible 2.3, we only have ansible 2.2
+#- name: (GitServerHTTPEndpoint) Create database schema in postgresql
+#  postgresql_schema:
+#    name: gitendpointapp
+#    owner: gitendpointuser
+#    database: gitendpointdb
+#    login_user: gitendpointuser
+#    login_password: 'g1T3Ndp01Nt_$3r'
+
+- name: (GitServerHTTPEndpoint) psql check schema gitendpointapp
+  command: psql -t -d gitendpointdb -c "SELECT EXISTS(SELECT 1 FROM pg_namespace WHERE nspname = 'gitendpointapp');"
+  register: check_schema
+  changed_when: "'f' in '{{ check_schema.stdout }}'"
+  become: yes
+  become_user: postgres
+
+- name: (GitServerHTTPEndpoint) psql schema gitendpointapp
+  command: psql -d gitendpointdb -c "CREATE SCHEMA gitendpointapp; ALTER USER gitendpointuser SET search_path TO gitendpointapp;"
+  when: check_schema.changed
+  become: yes
+  become_user: postgres
