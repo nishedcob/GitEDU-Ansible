@@ -9,3 +9,9 @@
   package:
     name: python-pymongo
     state: latest
+
+- name: ensure mongodb is always running
+  service:
+    name: mongodb
+    state: started
+    enabled: yes

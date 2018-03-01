@@ -9,3 +9,9 @@
   package:
     name: python-psycopg2
     state: latest
+
+- name: ensure postgresql is always running
+  service:
+    name: postgresql
+    state: started
+    enabled: yes
