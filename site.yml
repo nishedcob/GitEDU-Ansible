@@ -123,6 +123,8 @@
       become: True
 
 - hosts: gitserverhttpendpoint-db-servers
+  vars:
+      ansible_ssh_pipelining: yes
   tasks:
     - include: roles/gitserverhttpendpoint-db/tasks/00-pre.yaml
       become: True
@@ -135,6 +137,18 @@
 - hosts: gitedu-db-servers
   tasks:
     - include: roles/gitedu-db/tasks/00-pre.yaml
+      become: True
+
+##############################################################
+
+
+##############################################################
+
+# Generic Finish
+
+- hosts: all
+  tasks:
+    - include: roles/common/tasks/02-post.yaml
       become: True
 
 ##############################################################
