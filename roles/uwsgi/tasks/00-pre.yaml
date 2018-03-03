@@ -1,2 +1,12 @@
 ---
 
+- name: install the latest version of uwsgi
+  package:
+    name: uwsgi
+    state: latest
+
+- name: ensure uwsgi is always running
+  service:
+    name: uwsgi
+    state: started
+    enabled: yes
