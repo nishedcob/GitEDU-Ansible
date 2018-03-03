@@ -1,14 +1,12 @@
 ---
 
-- name: install the latest version of mongodb
+- name: install the latest version of mongodb, python-pymongo
   package:
-    name: mongodb
+    name: "{{ item }}"
     state: latest
-
-- name: install the latest version of python-pymongo
-  package:
-    name: python-pymongo
-    state: latest
+  with_items:
+    - mongodb
+    - python-pymongo
 
 - name: ensure mongodb is always running
   service:

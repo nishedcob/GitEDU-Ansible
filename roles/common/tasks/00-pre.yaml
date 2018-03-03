@@ -8,41 +8,27 @@
   vars:
       ansible_ssh_pipelining: no
 
-- name: install the latest version of vim
+- name: install the latest version of vim, zsh, tmux, net-tools, git
   package:
-    name: vim
+    name: "{{ item }}"
     state: latest
+  with_items:
+    - vim
+    - zsh
+    - tmux
+    - net-tools
+    - git
 
-- name: install the latest version of zsh
-  package:
-    name: zsh
-    state: latest
-
-- name: install the latest version of tmux
-  package:
-    name: tmux
-    state: latest
-
-- name: install the latest version of net-tools
-  package:
-    name: net-tools
-    state: latest
-
-- name: install the latest version of git
-  package:
-    name: git
-    state: latest
-
-- name: create nyx user for administration, add to sudo group
+- name: create nyx, jalopez users for administration, add to sudo group
   user:
-    name: nyx
-    shell: /bin/zsh
-    groups: sudo
+    name: "{{ item.username }}"
+    shell: "{{ item.shell }}"
+    groups: "{{ item.groups }}"
     append: yes
-
-- name: create jalopez user for administration, add to sudo group
-  user:
-    name: jalopez
-    shell: /bin/bash
-    groups: sudo
-    append: yes
+  with_items:
+    - username: nyx
+      shell: /bin/zsh
+      groups: sudo
+    - username: jalopez
+      shell: /bin/bash
+      groups: sudo

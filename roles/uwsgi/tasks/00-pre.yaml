@@ -2,8 +2,10 @@
 
 - name: install the latest version of uwsgi
   package:
-    name: uwsgi
+    name: "{{ item }}"
     state: latest
+  with_items:
+    - uwsgi
 
 - name: ensure uwsgi is always running
   service:

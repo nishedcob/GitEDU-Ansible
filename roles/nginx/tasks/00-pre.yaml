@@ -2,8 +2,10 @@
 
 - name: install the latest version of nginx
   package:
-    name: nginx-full
+    name: "{{ item }}"
     state: latest
+  with_items:
+    - nginx-full
 
 - name: ensure nginx is always running
   service:

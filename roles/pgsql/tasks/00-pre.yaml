@@ -1,14 +1,12 @@
 ---
 
-- name: install the latest version of postgresql
+- name: install the latest version of postgresql, python-psycopg2
   package:
-    name: postgresql
+    name: "{{ item }}"
     state: latest
-
-- name: install the latest version of python-psycopg2
-  package:
-    name: python-psycopg2
-    state: latest
+  with_items:
+    - postgresql
+    - python-psycopg2
 
 - name: ensure postgresql is always running
   service:
