@@ -4,7 +4,8 @@
 
 # Generic Init
 
-- hosts: all
+- name: Inicialize all nodes with base config
+  hosts: all
   tasks:
     - include: roles/common/tasks/00-pre.yaml
       become: True
@@ -14,42 +15,50 @@
 
 # Web Servers Init
 
-- hosts: web-servers
+- name: Inicialize web servers nodes
+  hosts: web-servers
   tasks:
     - include: roles/web/tasks/00-pre.yaml
       become: True
 
-- hosts: nginx-servers
+- name: Inicialize NGinX Nodes
+  hosts: nginx-servers
   tasks:
     - include: roles/nginx/tasks/00-pre.yaml
       become: True
 
-- hosts: inv-proxy-servers
+- name: Inicialize Inverse Proxies
+  hosts: inv-proxy-servers
   tasks:
     - include: roles/inv-proxy/tasks/00-pre.yaml
       become: True
 
-- hosts: gitweb-servers
+- name: Inicialize GitWeb Servers
+  hosts: gitweb-servers
   tasks:
     - include: roles/gitweb/tasks/00-pre.yaml
       become: True
 
-- hosts: static-servers
+- name: Inicialize Static Web File Servers
+  hosts: static-servers
   tasks:
     - include: roles/static/tasks/00-pre.yaml
       become: True
 
-- hosts: gitserverhttpendpoint-static-servers
+- name: Inicialize Static Web File Servers for GitServerHTTPEndpoint
+  hosts: gitserverhttpendpoint-static-servers
   tasks:
     - include: roles/gitserverhttpendpoint-static/tasks/00-pre.yaml
       become: True
 
-- hosts: edunube-static-servers
+- name: Inicialize Static Web File Servers for EduNube
+  hosts: edunube-static-servers
   tasks:
     - include: roles/edunube-static/tasks/00-pre.yaml
       become: True
 
-- hosts: gitedu-static-servers
+- name: Inicialize Static Web File Servers for GitEDU
+  hosts: gitedu-static-servers
   tasks:
     - include: roles/gitedu-static/tasks/00-pre.yaml
       become: True
@@ -58,37 +67,44 @@
 
 # App Servers Init
 
-- hosts: app-servers
+- name: Inicialize Application Servers
+  hosts: app-servers
   tasks:
     - include: roles/app/tasks/00-pre.yaml
       become: True
 
-- hosts: python3-servers
+- name: Inicialize Python3 Application Servers
+  hosts: python3-servers
   tasks:
     - include: roles/python3/tasks/00-pre.yaml
       become: True
 
-- hosts: uwsgi-servers
+- name: Inicialize uWSGI Application Servers
+  hosts: uwsgi-servers
   tasks:
     - include: roles/uwsgi/tasks/00-pre.yaml
       become: True
 
-- hosts: django-servers
+- name: Inicialize Django Application Servers
+  hosts: django-servers
   tasks:
     - include: roles/django/tasks/00-pre.yaml
       become: True
 
-- hosts: gitserverhttpendpoint-app-servers
+- name: Inicialize Django Application Servers for GitServerHTTPEndpoint
+  hosts: gitserverhttpendpoint-app-servers
   tasks:
     - include: roles/gitserverhttpendpoint-app/tasks/00-pre.yaml
       become: True
 
-- hosts: edunube-app-servers
+- name: Inicialize Django Application Servers for EduNube
+  hosts: edunube-app-servers
   tasks:
     - include: roles/edunube-app/tasks/00-pre.yaml
       become: True
 
-- hosts: gitedu-app-servers
+- name: Inicialize Django Application Servers for GitEDU
+  hosts: gitedu-app-servers
   tasks:
     - include: roles/gitedu-app/tasks/00-pre.yaml
       become: True
@@ -97,46 +113,54 @@
 
 # DB Servers Init
 
-- hosts: db-servers
+- name: Inicialize Database Nodes
+  hosts: db-servers
   tasks:
     - include: roles/db/tasks/00-pre.yaml
       become: True
 
-- hosts: pgsql-servers
+- name: Inicialize PostgreSQL Nodes
+  hosts: pgsql-servers
   tasks:
     - include: roles/pgsql/tasks/00-pre.yaml
       become: True
 
-- hosts: mongodb-servers
+- name: Inicialize MongoDB Nodes
+  hosts: mongodb-servers
   tasks:
     - include: roles/mongodb/tasks/00-pre.yaml
       become: True
 
-- hosts: edunube-mdb-servers
+- name: Inicialize MongoDB Nodes for EduNube
+  hosts: edunube-mdb-servers
   tasks:
     - include: roles/edunube-mdb/tasks/00-pre.yaml
       become: True
 
-- hosts: gitedu-mdb-servers
+- name: Inicialize MongoDB Nodes for GitEDU
+  hosts: gitedu-mdb-servers
   tasks:
     - include: roles/gitedu-mdb/tasks/00-pre.yaml
       become: True
 
-- hosts: gitserverhttpendpoint-db-servers
+- name: Inicialize PostgreSQL Nodes for GitServerHTTPEndpoint
+  hosts: gitserverhttpendpoint-db-servers
   vars:
       ansible_ssh_pipelining: yes
   tasks:
     - include: roles/gitserverhttpendpoint-db/tasks/00-pre.yaml
       become: True
 
-- hosts: edunube-db-servers
+- name: Inicialize PostgreSQL Nodes for EduNube
+  hosts: edunube-db-servers
   vars:
       ansible_ssh_pipelining: yes
   tasks:
     - include: roles/edunube-db/tasks/00-pre.yaml
       become: True
 
-- hosts: gitedu-db-servers
+- name: Inicialize PostgreSQL Nodes for GitEDU
+  hosts: gitedu-db-servers
   vars:
       ansible_ssh_pipelining: yes
   tasks:
@@ -150,7 +174,8 @@
 
 # Generic Finish
 
-- hosts: all
+- name: Finish all nodes closing actions for base config
+  hosts: all
   tasks:
     - include: roles/common/tasks/02-post.yaml
       become: True
