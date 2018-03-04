@@ -1,6 +1,6 @@
 ---
 
-- name: Disable requiretty in sudoers (allows for pipelining and better performance, ansible secure execution)
+- name: (Common Pre) Disable requiretty in sudoers (allows for pipelining and better performance, ansible secure execution)
   lineinfile:
     dest: /etc/sudoers
     line: 'Defaults requiretty'
@@ -8,7 +8,7 @@
   vars:
       ansible_ssh_pipelining: no
 
-- name: install the latest version of vim, zsh, tmux, net-tools, git
+- name: (Common Pre) install the latest version of vim, zsh, tmux, net-tools, git
   package:
     name: "{{ item }}"
     state: latest
@@ -19,7 +19,7 @@
     - net-tools
     - git
 
-- name: create nyx, jalopez users for administration, add to sudo group
+- name: (Common Pre) create nyx, jalopez users for administration, add to sudo group
   user:
     name: "{{ item.username }}"
     shell: "{{ item.shell }}"
