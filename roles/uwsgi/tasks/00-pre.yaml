@@ -1,21 +1,28 @@
 ---
 
-- name: install the latest version of uwsgi
+- name: (uWSGI) install the latest version of uwsgi
   package:
     name: "{{ item }}"
     state: latest
   with_items:
     - uwsgi
 
-- name: ensure uwsgi is always running
+- name: (uWSGI) ensure uwsgi is always running
   service:
     name: uwsgi
     state: started
     enabled: yes
 
-- name: create uwsgi group
+- name: (uWSGI) create uwsgi group
   group:
     name: "{{ item }}"
     state: present
   with_items:
     - uwsgi
+
+- name: (uWSGI) all members of uwsgi group can execute 'sudo systemctl restart uwsgi'
+  lineinfile:
+   dest: /etc/sudoers
+   state: present
+   regexp: '^%uwsgi\s'
+   line: '%uwsgi ALL = NOPASSWD: /bin/systemctl restart uwsgi'
