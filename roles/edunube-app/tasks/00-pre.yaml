@@ -1,2 +1,90 @@
 ---
 
+- name: (EduNube) create user for service, add to uwsgi group
+  user:
+    name: "{{ item.username }}"
+    groups: "{{ item.groups }}"
+    append: yes
+  with_items:
+    - username: edunube
+      groups: uwsgi
+
+# This will create base repo path if it doesn't exist
+- name: (EduNube) mkdir -p $HOME/EduNube
+  command: "mkdir -p $HOME/{{ item }}"
+  args:
+    creates: "$HOME/{{ item }}"
+  become: yes
+  become_user: edunube
+  with_items:
+    - EduNube
+
+# Init Git Repo if it is not a git repo yet
+- name: (EduNube) git init $HOME/EduNube
+  command: "git init"
+  args:
+    creates: "$HOME/{{ item }}/.git"
+    chdir: "$HOME/{{ item }}"
+  become: yes
+  become_user: edunube
+  with_items:
+    - EduNube
+
+#- name: (EduNube) git clone/pull github; checkout deployment branch
+#  git:
+#    repo: "{{ item.repourl }}"
+#    dest: "$HOME/{{ item.dest }}"
+#    version: "{{ item.version }}"
+#    remote: "{{ item.remotename }}"
+#  become: yes
+#  become_user: edunube
+#  with_items:
+#    - remotename: github
+#      repourl: 'https://github.com/nishedcob/GitEDU.git'
+#      dest: EduNube
+#      version: 'edunube-deploy'
+
+- name: (EduNube) git add additional remotes [github, gitlab]
+  command: "git remote add {{ item.remotename }} {{ item.remoteurl }}"
+  args:
+    creates: "$HOME/EduNube/.git/refs/remotes/{{ item.remotename }}"
+    chdir: "$HOME/EduNube"
+  become: yes
+  become_user: edunube
+  ignore_errors: yes
+  with_items:
+    - remotename: gitlab
+      remoteurl: 'https://gitlab.com/nishedcob/GitEDU.git'
+    - remotename: github
+      remoteurl: 'https://github.com/nishedcob/GitEDU.git'
+
+- name: (EduNube) git fetch [gitlab, github] [create remote dirs if they don't exist yet]
+  command: "git fetch {{ item }}"
+  args:
+    creates: "$HOME/EduNube/.git/refs/remotes/{{ item }}"
+    chdir: "$HOME/EduNube"
+  become: yes
+  become_user: edunube
+  with_items:
+    - gitlab
+    - github
+
+- name: (EduNube) git pull github, gitlab ; checkout deployment branch
+  git:
+    repo: "{{ item.repourl }}"
+    dest: "$HOME/{{ item.dest }}"
+    version: "{{ item.version }}"
+    remote: "{{ item.remotename }}"
+  become: yes
+  become_user: edunube
+  with_items:
+    # GitHub
+    - remotename: github
+      repourl: 'https://github.com/nishedcob/GitEDU.git'
+      dest: EduNube
+      version: 'edunube-deploy'
+    # Gitlab
+    - remotename: gitlab
+      repourl: 'https://gitlab.com/nishedcob/GitEDU.git'
+      dest: EduNube
+      version: 'edunube-deploy'
