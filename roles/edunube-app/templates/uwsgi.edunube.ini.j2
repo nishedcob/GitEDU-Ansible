@@ -1,0 +1,18 @@
+[uwsgi]
+project = {{ project }}
+project_location = %(project)/%(project)
+username = {{ user }}
+base = /home/%(username)
+environment = %(project_location)/env
+
+chdir = %(base)/%(project_location)
+home = %(base)/%(environment)
+module = %(project).wsgi:application
+logto = /usr/share/uwsgi.%(project).log
+
+master = true
+processes = 2
+
+uid = %(username)
+gid = {{ group }}
+http-socket = {{ http_socket }}

@@ -30,20 +30,6 @@
   with_items:
     - EduNube
 
-#- name: (EduNube) git clone/pull github; checkout deployment branch
-#  git:
-#    repo: "{{ item.repourl }}"
-#    dest: "$HOME/{{ item.dest }}"
-#    version: "{{ item.version }}"
-#    remote: "{{ item.remotename }}"
-#  become: yes
-#  become_user: edunube
-#  with_items:
-#    - remotename: github
-#      repourl: 'https://github.com/nishedcob/GitEDU.git'
-#      dest: EduNube
-#      version: 'edunube-deploy'
-
 - name: (EduNube) git add additional remotes [github, gitlab]
   command: "git remote add {{ item.remotename }} {{ item.remoteurl }}"
   args:
@@ -88,3 +74,41 @@
       repourl: 'https://gitlab.com/nishedcob/GitEDU.git'
       dest: EduNube
       version: 'edunube-deploy'
+
+- name: (EduNube) install git post-receive hook for receiving deploys via git push
+  vars:
+    service_name: "EduNube"
+    service_dir: "{{ service_name }}"
+    service_deploy_branch: "edunube-deploy"
+    base_path: "/home/edunube/{{ service_name }}"
+  template:
+    src: "roles/edunube-app/templates/git-post-receive-deploy-hook.sh.j2"
+    dest: "{{ base_path }}/.git/hooks/post-receive"
+    backup: yes
+    force: yes
+    mode: 0755
+    owner: edunube
+    group: edunube
+
+- name: (EduNube) create virtualenv [python 3] and install requirements
+  pip:
+    requirements: "$HOME/EduNube/EduNube/requirements.txt"
+    virtualenv: "$HOME/env"
+    virtualenv_python: python3
+  become: yes
+  become_user: edunube
+
+- name: (EduNube) install uwsgi ini config
+  vars:
+    project: "EduNube"
+    user: "edunube"
+    group: "uwsgi"
+    http_socket: "127.0.0.1:8011"
+  template:
+    src: "roles/edunube-app/templates/uwsgi.edunube.ini.j2"
+    dest: "/etc/uwsgi/apps-available/edunube.ini"
+    backup: yes
+    force: yes
+    mode: 0644
+    owner: root
+    group: root
