@@ -12,3 +12,10 @@
     name: uwsgi
     state: started
     enabled: yes
+
+- name: create uwsgi group
+  group:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - uwsgi
