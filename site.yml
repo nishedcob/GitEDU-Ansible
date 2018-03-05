@@ -111,6 +111,12 @@
     - include: roles/gitedu-app/tasks/00-pre.yaml
       become: True
 
+- name: Post Inicialization uWSGI Application Server Tasks
+  hosts: uwsgi-servers
+  tasks:
+    - include: roles/uwsgi/tasks/00.5-post-pre.yaml
+      become: True
+
 ##############################################################
 
 # DB Servers Init
