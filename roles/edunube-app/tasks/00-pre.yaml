@@ -112,3 +112,15 @@
     mode: 0644
     owner: root
     group: root
+
+- name: (EduNube) symlink edunube.ini apps-enabled -> apps-available
+  file:
+    group: root
+    force: no
+    state: link
+    owner: root
+    src: "{{ item.target }}"
+    dest: "{{ item.link }}"
+  with_items:
+    - target: "/etc/uwsgi/apps-available/edunube.ini"
+      link: "/etc/uwsgi/apps-enabled/edunube.ini"

@@ -13,6 +13,6 @@ logto = /usr/share/uwsgi.%(project).log
 master = true
 processes = 2
 
-uid = %(username)
+uid = {{ user }}
 gid = {{ group }}
 http-socket = {{ http_socket }}
