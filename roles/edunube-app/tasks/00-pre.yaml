@@ -91,6 +91,14 @@
     owner: edunube
     group: edunube
 
+- name: (EduNube) [rm -rdvf $HOME/env] Ansible bug wants to replace python3 virtualenv with python2 virtualenv, force recreation of virtualenv everytime to avoid issue
+  file:
+    path: "$HOME/env"
+    state: absent
+    force: yes
+  become: yes
+  become_user: edunube
+
 - name: (EduNube) create virtualenv [python 3] and install requirements
   pip:
     requirements: "$HOME/EduNube/EduNube/requirements.txt"
