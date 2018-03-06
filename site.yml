@@ -177,6 +177,13 @@
 
 ##############################################################
 
+- name: Configure Django Application Servers for EduNube
+  hosts: edunube-app-servers
+  vars:
+      ansible_ssh_pipelining: yes
+  tasks:
+    - include: roles/edunube-app/tasks/01-main.yaml
+      become: True
 
 ##############################################################
 

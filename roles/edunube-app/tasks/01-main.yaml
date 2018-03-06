@@ -1,2 +1,25 @@
 ---
 
+#  django_manage:
+#    command: collectstatic
+#    app_path: "$HOME/EduNube/EduNube"
+#    virtualenv: "$HOME"
+#    settings: "EduNube.settings"
+- name: (EduNube) django manage.py collectstatic
+  command: "$HOME/env/bin/python3 manage.py collectstatic --no-input"
+  args:
+    chdir: "$HOME/EduNube/EduNube"
+  become: yes
+  become_user: edunube
+
+#  django_manage:
+#    command: migrate
+#    app_path: "$HOME/EduNube/EduNube"
+#    virtualenv: "$HOME"
+#    settings: "EduNube.settings"
+- name: (EduNube) django manage.py migrate
+  command: "$HOME/env/bin/python3 manage.py migrate --no-input"
+  args:
+    chdir: "$HOME/EduNube/EduNube"
+  become: yes
+  become_user: edunube
