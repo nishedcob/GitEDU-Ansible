@@ -32,7 +32,7 @@
   become_user: postgres
 
 - name: (GitServerHTTPEndpoint) psql schema gitendpointapp
-  command: psql -d gitendpointdb -c "CREATE SCHEMA gitendpointapp; ALTER USER gitendpointuser SET search_path TO gitendpointapp;"
+  command: psql -d gitendpointdb -c "CREATE SCHEMA gitendpointapp AUTHORIZATION gitendpointuser; ALTER USER gitendpointuser SET search_path TO gitendpointapp;"
   when: check_schema.changed
   become: yes
   become_user: postgres

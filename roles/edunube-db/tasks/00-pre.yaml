@@ -32,7 +32,7 @@
   become_user: postgres
 
 - name: (EduNube) psql schema edunubeapp
-  command: psql -d edunubedb -c "CREATE SCHEMA edunubeapp; ALTER USER edunubeuser SET search_path TO edunubeapp;"
+  command: psql -d edunubedb -c "CREATE SCHEMA edunubeapp AUTHORIZATION edunubeuser; ALTER USER edunubeuser SET search_path TO edunubeapp;"
   when: check_schema.changed
   become: yes
   become_user: postgres

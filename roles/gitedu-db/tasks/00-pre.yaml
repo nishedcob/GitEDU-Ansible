@@ -32,7 +32,7 @@
   become_user: postgres
 
 - name: (GitEDU) psql schema giteduapp
-  command: psql -d gitedudb -c "CREATE SCHEMA giteduapp; ALTER USER giteduser SET search_path TO giteduapp;"
+  command: psql -d gitedudb -c "CREATE SCHEMA giteduapp AUTHORIZATION giteduser; ALTER USER giteduser SET search_path TO giteduapp;"
   when: check_schema.changed
   become: yes
   become_user: postgres
