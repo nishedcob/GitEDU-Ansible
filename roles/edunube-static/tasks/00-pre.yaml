@@ -1,2 +1,9 @@
 ---
 
+- name: (NGinX Static) mkdir -p /static/service/uwsgi/edunube/static
+  file:
+    path: "/static/service/uwsgi/edunube/static"
+    state: directory
+    mode: 0755
+    owner: edunube
+    group: root

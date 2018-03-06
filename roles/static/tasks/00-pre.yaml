@@ -1,2 +1,9 @@
 ---
 
+- name: (NGinX Static) mkdir -p /static/service/uwsgi
+  file:
+    path: "/static/service/uwsgi"
+    state: directory
+    mode: 0575
+    owner: root
+    group: uwsgi
