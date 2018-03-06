@@ -63,6 +63,12 @@
     - include: roles/gitedu-static/tasks/00-pre.yaml
       become: True
 
+- name: Post Inicialization NGinX Web Server Tasks
+  hosts: nginx-servers
+  tasks:
+    - include: roles/nginx/tasks/00.5-post-pre.yaml
+      become: True
+
 ##############################################################
 
 # App Servers Init

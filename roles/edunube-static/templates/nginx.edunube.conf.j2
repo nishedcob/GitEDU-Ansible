@@ -1,0 +1,11 @@
+server {
+        listen {{ server_port }};
+        listen [::]:{{ server_port }};
+        server_name {{ server_name }};
+        location {{ static_url }} {
+                root {{ static_path }};
+        }
+        location / {
+                proxy_pass {{ app_server_socket }};
+        }
+}

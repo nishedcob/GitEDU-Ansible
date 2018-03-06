@@ -1,9 +1,37 @@
 ---
 
-- name: (NGinX Static) mkdir -p /static/service/uwsgi/edunube/static
+- name: (EduNube NGinX Static) mkdir -p /static/service/uwsgi/edunube/static
   file:
     path: "/static/service/uwsgi/edunube/static"
     state: directory
     mode: 0755
     owner: edunube
     group: root
+
+- name: (EduNube NGinX Static) install config
+  vars:
+    server_port: "8010"
+    server_name: "_"
+    static_url: "/static/"
+    static_path: "/static/service/uwsgi/edunube"
+    app_server_socket: "http://127.0.0.1:8011"
+  template:
+    src: "roles/edunube-static/templates/nginx.edunube.conf.j2"
+    dest: "/etc/nginx/sites-available/edunube"
+    backup: yes
+    force: yes
+    mode: 0644
+    owner: root
+    group: root
+
+- name: (EduNube) symlink edunube sites-enabled -> sites-available
+  file:
+    group: root
+    force: no
+    state: link
+    owner: root
+    src: "{{ item.target }}"
+    dest: "{{ item.link }}"
+  with_items:
+    - target: "/etc/nginx/sites-available/edunube"
+      link: "/etc/nginx/sites-enabled/32-edunube"
