@@ -24,7 +24,21 @@ Vagrant.configure("2") do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
+
+  # NGinX Main
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+  # NGinX GitEDU
+  config.vm.network "forwarded_port", guest: 8000, host: 8800
+  # uWSGI GitEDU
+  config.vm.network "forwarded_port", guest: 8002, host: 8802
+  # NGinX EduNube
+  config.vm.network "forwarded_port", guest: 8010, host: 8810
+  # uWSGI EduNube
+  config.vm.network "forwarded_port", guest: 8011, host: 8811
+  # NGinX GitServerHTTPEndpoint
+  config.vm.network "forwarded_port", guest: 8020, host: 8820
+  # uWSGI GitServerHTTPEndpoint
+  config.vm.network "forwarded_port", guest: 8021, host: 8821
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
