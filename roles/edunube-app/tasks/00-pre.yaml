@@ -11,9 +11,10 @@
 
 # This will create base repo path if it doesn't exist
 - name: (EduNube) mkdir -p $HOME/EduNube
-  command: "mkdir -p $HOME/{{ item }}"
-  args:
-    creates: "$HOME/{{ item }}"
+  file:
+    path: "$HOME/{{ item }}"
+    state: directory
+    mode: 0755
   become: yes
   become_user: edunube
   with_items:
