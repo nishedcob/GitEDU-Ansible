@@ -1,9 +1,12 @@
 [uwsgi]
+plugin = python3
+
 project = {{ project }}
 project_location = %(project)/%(project)
 username = {{ user }}
 base = /home/%(username)
-environment = %(project_location)/env
+#environment = %(project_location)/env
+environment = env
 
 chdir = %(base)/%(project_location)
 home = %(base)/%(environment)

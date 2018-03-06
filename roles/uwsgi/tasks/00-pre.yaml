@@ -1,11 +1,12 @@
 ---
 
-- name: (uWSGI) install the latest version of uwsgi
+- name: (uWSGI) install the latest version of uwsgi + python3 plugin
   package:
     name: "{{ item }}"
     state: latest
   with_items:
     - uwsgi
+    - uwsgi-plugin-python3
 
 - name: (uWSGI) ensure uwsgi is always running
   service:
