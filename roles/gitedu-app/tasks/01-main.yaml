@@ -1,2 +1,25 @@
 ---
 
+#  django_manage:
+#    command: collectstatic
+#    app_path: "$HOME/GitEDU/GitEDU"
+#    virtualenv: "$HOME"
+#    settings: "GitEDU.settings"
+- name: (GitEDU) django manage.py collectstatic
+  command: "$HOME/env/bin/python3 manage.py collectstatic --no-input"
+  args:
+    chdir: "$HOME/GitEDU/GitEDU"
+  become: yes
+  become_user: gitedu
+
+#  django_manage:
+#    command: migrate
+#    app_path: "$HOME/GitEDU/GitEDU"
+#    virtualenv: "$HOME"
+#    settings: "GitEDU.settings"
+- name: (GitEDU) django manage.py migrate
+  command: "$HOME/env/bin/python3 manage.py migrate --no-input"
+  args:
+    chdir: "$HOME/GitEDU/GitEDU"
+  become: yes
+  become_user: gitedu

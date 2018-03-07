@@ -1,2 +1,135 @@
 ---
 
+- name: (GitEDU) create user for service, add to uwsgi group
+  user:
+    name: "{{ item.username }}"
+    groups: "{{ item.groups }}"
+    append: yes
+  with_items:
+    - username: gitedu
+      groups: uwsgi
+
+# This will create base repo path if it doesn't exist
+- name: (GitEDU) mkdir -p $HOME/GitEDU
+  file:
+    path: "$HOME/{{ item }}"
+    state: directory
+    mode: 0755
+  become: yes
+  become_user: gitedu
+  with_items:
+    - GitEDU
+
+# Init Git Repo if it is not a git repo yet
+- name: (GitEDU) git init $HOME/GitEDU
+  command: "git init"
+  args:
+    creates: "$HOME/{{ item }}/.git"
+    chdir: "$HOME/{{ item }}"
+  become: yes
+  become_user: gitedu
+  with_items:
+    - GitEDU
+
+- name: (GitEDU) git add additional remotes [github, gitlab]
+  command: "git remote add {{ item.remotename }} {{ item.remoteurl }}"
+  args:
+    creates: "$HOME/GitEDU/.git/refs/remotes/{{ item.remotename }}"
+    chdir: "$HOME/GitEDU"
+  become: yes
+  become_user: gitedu
+  ignore_errors: yes
+  with_items:
+    - remotename: gitlab
+      remoteurl: 'https://gitlab.com/nishedcob/GitEDU.git'
+    - remotename: github
+      remoteurl: 'https://github.com/nishedcob/GitEDU.git'
+
+- name: (GitEDU) git fetch [gitlab, github] [create remote dirs if they don't exist yet]
+  command: "git fetch {{ item }}"
+  args:
+    creates: "$HOME/GitEDU/.git/refs/remotes/{{ item }}"
+    chdir: "$HOME/GitEDU"
+  become: yes
+  become_user: gitedu
+  with_items:
+    - gitlab
+    - github
+
+- name: (GitEDU) git pull github, gitlab ; checkout deployment branch
+  git:
+    repo: "{{ item.repourl }}"
+    dest: "$HOME/{{ item.dest }}"
+    version: "{{ item.version }}"
+    remote: "{{ item.remotename }}"
+  become: yes
+  become_user: gitedu
+  with_items:
+    # GitHub
+    - remotename: github
+      repourl: 'https://github.com/nishedcob/GitEDU.git'
+      dest: GitEDU
+      version: 'edunube-deploy'
+    # Gitlab
+    - remotename: gitlab
+      repourl: 'https://gitlab.com/nishedcob/GitEDU.git'
+      dest: GitEDU
+      version: 'edunube-deploy'
+
+- name: (GitEDU) install git post-receive hook for receiving deploys via git push
+  vars:
+    service_name: "GitEDU"
+    service_dir: "{{ service_name }}"
+    service_deploy_branch: "gitedu-deploy"
+    base_path: "/home/gitedu/{{ service_name }}"
+  template:
+    src: "roles/gitedu-app/templates/git-post-receive-deploy-hook.sh.j2"
+    dest: "{{ base_path }}/.git/hooks/post-receive"
+    backup: yes
+    force: yes
+    mode: 0755
+    owner: gitedu
+    group: gitedu
+
+- name: (GitEDU) [rm -rdvf $HOME/env] Ansible bug wants to replace python3 virtualenv with python2 virtualenv, force recreation of virtualenv everytime to avoid issue
+  file:
+    path: "$HOME/env"
+    state: absent
+    force: yes
+  become: yes
+  become_user: gitedu
+
+- name: (GitEDU) create virtualenv [python 3] and install requirements
+  pip:
+    requirements: "$HOME/GitEDU/GitEDU/requirements.txt"
+    virtualenv: "$HOME/env"
+    virtualenv_python: python3
+  become: yes
+  become_user: gitedu
+
+- name: (GitEDU) install uwsgi ini config
+  vars:
+    project: "GitEDU"
+    user: "gitedu"
+    group: "uwsgi"
+    http_socket: "127.0.0.1:8002"
+  template:
+    src: "roles/gitedu-app/templates/uwsgi.gitedu.ini.j2"
+    dest: "/etc/uwsgi/apps-available/gitedu.ini"
+    backup: yes
+    force: yes
+    mode: 0644
+    owner: root
+    group: root
+
+- name: (GitEDU) symlink edunube.ini apps-enabled -> apps-available
+  file:
+    group: root
+    force: no
+    state: link
+    owner: root
+    src: "{{ item.target }}"
+    dest: "{{ item.link }}"
+  with_items:
+    - target: "/etc/uwsgi/apps-available/gitedu.ini"
+      link: "/etc/uwsgi/apps-enabled/gitedu.ini"
