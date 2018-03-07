@@ -1,2 +1,37 @@
 ---
 
+- name: (GitEDU NGinX Static) mkdir -p /static/service/uwsgi/gitedu/static
+  file:
+    path: "/static/service/uwsgi/gitedu/static"
+    state: directory
+    mode: 0755
+    owner: gitedu
+    group: root
+
+- name: (GitEDU NGinX Static) install config
+  vars:
+    server_port: "8000"
+    server_name: "_"
+    static_url: "/static/"
+    static_path: "/static/service/uwsgi/gitedu"
+    app_server_socket: "http://127.0.0.1:8002"
+  template:
+    src: "roles/gitedu-static/templates/nginx.gitedu.conf.j2"
+    dest: "/etc/nginx/sites-available/gitedu"
+    backup: yes
+    force: yes
+    mode: 0644
+    owner: root
+    group: root
+
+- name: (GitEDU) symlink gitedu sites-enabled -> sites-available
+  file:
+    group: root
+    force: no
+    state: link
+    owner: root
+    src: "{{ item.target }}"
+    dest: "{{ item.link }}"
+  with_items:
+    - target: "/etc/nginx/sites-available/gitedu"
+      link: "/etc/nginx/sites-enabled/31-gitedu"
